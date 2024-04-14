@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment1</title>
+  <script src="asg1.js"></script>
+  <script src="Point.js"></script>
+  <script src="Triangle.js"></script>
+  <script src="Circle.js"></script>
+  <script src="lib/webgl-utils.js"></script>
+  <script src="lib/webgl-debug.js"></script>
+  <script src="lib/cuon-utils.js"></script>
+</head>
+<body onload="main()">
+  <p>Notes to Grader: Implemented alpha feature for awesomeness requirement.</p>
+  <canvas id="webgl" width="400" height="400">
+    Please use a browser that supports Canvas
+  </canvas>
+  <img src="reference.jpg" height="400" alt="Reference Picture">
+  <p id="numdot">XXX</p>
+  <p>
+  <button type="button" id="green">Green</button>
+  <button type="button" id="red">Red</button>
+  <button type="button" id="clear">Clear</button>
+  <p>
+  <button type="button" id="point">Point</button>
+  <button type="button" id="triangle">Triangle</button>
+  <button type="button" id="circle">Circle</button>
+  <p>
+  <button type="button" onclick="drawMilk()" id="art">Draw Art</button>
+  <p>
+  Red <input type="range" min="0" max="100" value="100" class="slider" id="redSlide">
+  <p>
+  Green <input type="range" min="0" max="100" value="0" class="slider" id="greenSlide">
+  <p>
+  Blue <input type="range" min="0" max="100" value="0" class="slider" id="blueSlide">
+  <p>
+  Size <input type="range" min="5" max="40" value="0" class="slider" id="sizeSlide">
+  <p>
+  Segments <input type="range" min="10" max="40" value="0" class="slider" id="segSlide">
+  <p>
+  Alpha <input type="range" min="0" max="100" value="100" class="slider" id="alpSlide">
+
+</body>
+</html>
