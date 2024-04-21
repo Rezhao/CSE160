@@ -1,5 +1,8 @@
 //vite.config.js
 export default {
     //config options
-    base: "/CSE160/Assignment5A/"
+    base: "/Assignment5A/",
+    build: {
+        chunkSizeWarningLimit: 1600,
+    },
 };
