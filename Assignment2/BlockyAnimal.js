@@ -92,6 +92,7 @@ let g_leftLegAngle = 0;
 let g_rightLegAngle = 0;
 let g_feetAngle = 0;
 let g_calfAngle = 0;
+let g_headAngle = 0;
 // let g_legAngle = 0;
 // let g_magentaAngle = 0;
 // let g_rightLegAnimation = false;
@@ -99,6 +100,7 @@ let g_calfAngle = 0;
 let g_legAnimation = false;
 let g_feetAnimation = false;
 let g_calfAnimation = false;
+let g_headAnimation = false;
 // let g_magentaAnimation = false;
 
 //set up actions for the HTML UI elements
@@ -112,6 +114,9 @@ function addActionsForHtmlUI() {
   // calf animation buttons
   document.getElementById('animationCalfOffButton').onclick = function() {g_calfAnimation = false;};
   document.getElementById('animationCalfOnButton').onclick = function() {g_calfAnimation = true;};
+  // head animation buttons
+  document.getElementById('animationHeadOffButton').onclick = function() {g_headAnimation = false;};
+  document.getElementById('animationHeadOnButton').onclick = function() {g_headAnimation = true;};
   // document.getElementById('animationRightLegOffButton').onclick = function() {g_rightLegAnimation = false;};
   // document.getElementById('animationRightLegOnButton').onclick = function() {g_rightLegAnimation = true;};
 
@@ -119,6 +124,7 @@ function addActionsForHtmlUI() {
   document.getElementById('feetSlide').addEventListener('mousemove', function() {g_feetAngle = this.value; renderAllShapes();});
   document.getElementById('calfSlide').addEventListener('mousemove', function() {g_calfAngle = this.value; renderAllShapes();});
   document.getElementById('legSlide').addEventListener('mousemove', function() {g_leftLegAngle = this.value; g_rightLegAngle = -this.value; renderAllShapes();});
+  document.getElementById('headSlide').addEventListener('mousemove', function() {g_headAngle = this.value; renderAllShapes();});
 
 
   //camera angle slider events
@@ -214,6 +220,9 @@ function updateAnimationAngles() {
   }
   if (g_calfAnimation) {
     g_calfAngle = -Math.abs(30*Math.sin(2*g_seconds));
+  }
+  if (g_headAnimation) {
+    g_headAngle = (10*Math.sin(2*g_seconds));
   }
 }
 
@@ -374,6 +383,7 @@ function renderAllShapes() {
   var head = new Cube();
   head.matrix = bodyCoor;
   head.matrix.translate(-0.1, 0.6, -0.4);
+  head.matrix.rotate(g_headAngle, 1, 0, 1);
   var headCoordinates = new Matrix4(head.matrix);
   head.matrix.scale(0.65, 0.55, 0.55);
   head.render();
