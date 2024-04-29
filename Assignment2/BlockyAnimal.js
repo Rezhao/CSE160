@@ -91,29 +91,34 @@ let g_globalAngle = 0;
 let g_leftLegAngle = 0;
 let g_rightLegAngle = 0;
 let g_feetAngle = 0;
+let g_calfAngle = 0;
 // let g_legAngle = 0;
 // let g_magentaAngle = 0;
 // let g_rightLegAnimation = false;
 // let g_leftLegAnimation = false;
 let g_legAnimation = false;
 let g_feetAnimation = false;
+let g_calfAnimation = false;
 // let g_magentaAnimation = false;
 
 //set up actions for the HTML UI elements
 function addActionsForHtmlUI() {
-  //button events
+  //feet animation buttons
   document.getElementById('animationFeetOffButton').onclick = function() {g_feetAnimation = false;};
   document.getElementById('animationFeetOnButton').onclick = function() {g_feetAnimation = true;};
   // leg animation buttons
   document.getElementById('animationLegOffButton').onclick = function() {g_legAnimation = false;};
   document.getElementById('animationLegOnButton').onclick = function() {g_legAnimation = true;};
+  // calf animation buttons
+  document.getElementById('animationCalfOffButton').onclick = function() {g_calfAnimation = false;};
+  document.getElementById('animationCalfOnButton').onclick = function() {g_calfAnimation = true;};
   // document.getElementById('animationRightLegOffButton').onclick = function() {g_rightLegAnimation = false;};
   // document.getElementById('animationRightLegOnButton').onclick = function() {g_rightLegAnimation = true;};
 
   //block slider events
   document.getElementById('feetSlide').addEventListener('mousemove', function() {g_feetAngle = this.value; renderAllShapes();});
+  document.getElementById('calfSlide').addEventListener('mousemove', function() {g_calfAngle = this.value; renderAllShapes();});
   document.getElementById('legSlide').addEventListener('mousemove', function() {g_leftLegAngle = this.value; g_rightLegAngle = -this.value; renderAllShapes();});
-  // document.getElementById('rightLegSlide').addEventListener('mousemove', function() {g_legAngle = this.value; renderAllShapes();});
 
 
   //camera angle slider events
@@ -204,11 +209,11 @@ function updateAnimationAngles() {
     g_leftLegAngle = (30*Math.sin(2*g_seconds));
     g_rightLegAngle = (-30*Math.sin(2*g_seconds));
   }
-  // if (g_rightLegAnimation) {
-  //   g_rightLegAngle = (-30*Math.sin(2*g_seconds));
-  // }
   if (g_feetAnimation) {
     g_feetAngle = (10*Math.sin(3*g_seconds));
+  }
+  if (g_calfAnimation) {
+    g_calfAngle = -Math.abs(30*Math.sin(2*g_seconds));
   }
 }
 
@@ -255,14 +260,25 @@ function renderAllShapes() {
   fontLeftLeg.matrix.setTranslate(-0.401, 0.1, -0.001);
   fontLeftLeg.matrix.rotate(g_leftLegAngle, 1, 0, 0);
   var fontLeftLegCoordinates = new Matrix4(fontLeftLeg.matrix);
-  fontLeftLeg.matrix.scale(0.301, -0.9, 0.3);
+  fontLeftLeg.matrix.scale(0.301, -0.5, 0.3);
   fontLeftLeg.render();
+
+  //panda front left calf
+  var fontLeftCalf = new Cube();
+  fontLeftCalf.color = [0, 0, 0, 1];
+  fontLeftCalf.matrix = new Matrix4(fontLeftLegCoordinates);
+  // fontLeftCalf.matrix = new Matrix4(bodyCoor);
+  fontLeftCalf.matrix.translate(-0.001, -0.5, -0.00);
+  fontLeftCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
+  var fontLeftCalfCoordinates = new Matrix4(fontLeftCalf.matrix);
+  fontLeftCalf.matrix.scale(0.301, -0.4, 0.3);
+  fontLeftCalf.render();
 
   //panda front left foot
   var fontLeftFoot = new Cube();
   fontLeftFoot.color = [0, 0, 0, 1];
-  fontLeftFoot.matrix = fontLeftLegCoordinates;
-  fontLeftFoot.matrix.translate(-0.001, -0.82, 0.315);
+  fontLeftFoot.matrix = fontLeftCalfCoordinates;
+  fontLeftFoot.matrix.translate(-0.001, -0.32, 0.315);
   fontLeftFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   fontLeftFoot.matrix.scale(0.303, -0.15, -0.401);
   fontLeftFoot.render();
@@ -274,70 +290,82 @@ function renderAllShapes() {
   fontRightLeg.matrix.setTranslate(0.201, 0.1, -0.001);
   fontRightLeg.matrix.rotate(g_rightLegAngle, 1, 0, 0);
   var fontRightLegCoordinates = new Matrix4(fontRightLeg.matrix);
-  fontRightLeg.matrix.scale(0.301, -0.9, 0.3);
+  fontRightLeg.matrix.scale(0.301, -0.5, 0.3);
   fontRightLeg.render();
+
+  //panda front right calf
+  var fontRightCalf = new Cube();
+  fontRightCalf.color = [0, 0, 0, 1];
+  fontRightCalf.matrix = new Matrix4(fontRightLegCoordinates);
+  fontRightCalf.matrix.translate(-0.001, -0.5, -0.00);
+  fontRightCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
+  var fontRightCalfCoordinates = new Matrix4(fontRightCalf.matrix);
+  fontRightCalf.matrix.scale(0.301, -0.4, 0.3);
+  fontRightCalf.render();
 
   //panda front right foot
   var fontRightFoot = new Cube();
   fontRightFoot.color = [0, 0, 0, 1];
-  fontRightFoot.matrix = fontRightLegCoordinates;
-  fontRightFoot.matrix.translate(-0.001, -0.82, 0.315);
+  fontRightFoot.matrix = fontRightCalfCoordinates;
+  fontRightFoot.matrix.translate(-0.001, -0.32, 0.315);
   fontRightFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   fontRightFoot.matrix.scale(0.303, -0.15, -0.401);
   fontRightFoot.render();
 
-  //panda back top left leg
+  //panda back left leg
   var backLeftLeg = new Cube();
   backLeftLeg.color = [1, 1, 1, 1];
   backLeftLeg.matrix = new Matrix4(bodyCoor);
   backLeftLeg.matrix.setTranslate(-0.4, 0.1, 0.601);
   backLeftLeg.matrix.rotate(g_rightLegAngle, 1, 0, 0);
   var backLeftLegCoordinates = new Matrix4(backLeftLeg.matrix);
-  backLeftLeg.matrix.scale(0.3, -0.9, 0.3);
+  backLeftLeg.matrix.scale(0.3, -0.5, 0.3);
   backLeftLeg.render();
-
-  //panda back bottom left leg
-  var backLeftBotLeg = new Cube();
-  backLeftBotLeg.color = [0, 0, 0, 1];
-  backLeftBotLeg.matrix = new Matrix4(backLeftLegCoordinates);
-  backLeftBotLeg.matrix.translate(0, -0.9, 0);
-  backLeftBotLeg.matrix.scale(0.301, 0.501, 0.301);
-  backLeftBotLeg.matrix.translate(-0.001, -0.001, -0.001);
-  backLeftBotLeg.render();
+  
+  //panda back left calf
+  var backLeftCalf = new Cube();
+  backLeftCalf.color = [0, 0, 0, 1];
+  backLeftCalf.matrix = new Matrix4(backLeftLegCoordinates);
+  backLeftCalf.matrix.translate(-0.001, -0.5, -0.00);
+  backLeftCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
+  var backLeftCalfCoordinates = new Matrix4(backLeftCalf.matrix);
+  backLeftCalf.matrix.scale(0.301, -0.4, 0.3);
+  backLeftCalf.render();
 
   //panda back left foot
   var backLeftFoot = new Cube();
   backLeftFoot.color = [0, 0, 0, 1];
-  backLeftFoot.matrix = backLeftLegCoordinates;
-  backLeftFoot.matrix.translate(-0.001, -0.82, 0.315);
+  backLeftFoot.matrix = backLeftCalfCoordinates;
+  backLeftFoot.matrix.translate(-0.001, -0.32, 0.315);
   backLeftFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   backLeftFoot.matrix.scale(0.303, -0.15, -0.401);
   backLeftFoot.render();
 
-  //panda back top right leg
+  //panda back right leg
   var backRightLeg = new Cube();
   backRightLeg.color = [1, 1, 1, 1];
   backRightLeg.matrix = new Matrix4(bodyCoor);
-  backRightLeg.matrix.setTranslate(0.2, 0.1, 0.601);
+  backRightLeg.matrix.setTranslate(0.201, 0.1, 0.601);
   backRightLeg.matrix.rotate(g_leftLegAngle, 1, 0, 0);
   var backRightLegCoordinates = new Matrix4(backRightLeg.matrix);
-  backRightLeg.matrix.scale(0.3, -0.9, 0.3);
+  backRightLeg.matrix.scale(0.301, -0.5, 0.3);
   backRightLeg.render();
 
-  //panda back bottom right leg
-  var backRightBotLeg = new Cube();
-  backRightBotLeg.color = [0, 0, 0, 1];
-  backRightBotLeg.matrix = new Matrix4(backRightLegCoordinates);
-  backRightBotLeg.matrix.translate(0, -0.9, 0);
-  backRightBotLeg.matrix.scale(0.301, 0.501, 0.301);
-  backRightBotLeg.matrix.translate(-0.001, -0.001, -0.001);
-  backRightBotLeg.render();
+  //panda back left calf
+  var backRightCalf = new Cube();
+  backRightCalf.color = [0, 0, 0, 1];
+  backRightCalf.matrix = new Matrix4(backRightLegCoordinates);
+  backRightCalf.matrix.translate(-0.001, -0.5, -0.00);
+  backRightCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
+  var backRightCalfCoordinates = new Matrix4(backRightCalf.matrix);
+  backRightCalf.matrix.scale(0.301, -0.4, 0.3);
+  backRightCalf.render();
 
   //panda back right foot
   var backRightFoot = new Cube();
   backRightFoot.color = [0, 0, 0, 1];
-  backRightFoot.matrix = backRightLegCoordinates;
-  backRightFoot.matrix.translate(-0.001, -0.82, 0.315);
+  backRightFoot.matrix = backRightCalfCoordinates;
+  backRightFoot.matrix.translate(-0.001, -0.32, 0.315);
   backRightFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   backRightFoot.matrix.scale(0.303, -0.15, -0.401);
   backRightFoot.render();
