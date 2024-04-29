@@ -17,20 +17,30 @@
 </head>
 <body onload="main()">
   <p>Notes to Grader: </p>
-  <canvas id="webgl" width="400" height="400">
+  <canvas id="webgl" width="500" height="500">
     Please use a browser that supports Canvas
   </canvas>
   <p id="numdot">XXX</p>
   <p>
-  Magenta <input type="range" min="-45" max="45" value="0" class="slider" id="magentaSlide">
+  Feet Movement <input type="range" min="-10" max="10" value="0" class="slider" id="feetSlide">
   Animation:
-  <button type="button" id="animationMagentaOnButton">ON</button>
-  <button type="button" id="animationMagentaOffButton">OFF</button>
+  <button type="button" id="animationFeetOnButton">ON</button>
+  <button type="button" id="animationFeetOffButton">OFF</button>
   <p>
-  Yellow <input type="range" min="-45" max="45" value="0" class="slider" id="yellowSlide">
+  Leg Movement <input type="range" min="-30" max="30" value="0" class="slider" id="legSlide">
   Animation:
-  <button type="button" id="animationYellowOnButton">ON</button>
-  <button type="button" id="animationYellowOffButton">OFF</button>
+  <button type="button" id="animationLegOnButton">ON</button>
+  <button type="button" id="animationLegOffButton">OFF</button>
+  <p>
+  Leg Calf Movement <input type="range" min="-30" max="30" value="0" class="slider" id="calfSlide">
+  Animation:
+  <button type="button" id="animationCalfOnButton">ON</button>
+  <button type="button" id="animationCalfOffButton">OFF</button>
+  <!-- <p>
+  Right Leg Follow <input type="range" min="-30" max="30" value="0" class="slider" id="rightLegSlide">
+  Animation:
+  <button type="button" id="animationRightLegOnButton">ON</button>
+  <button type="button" id="animationRightLegOffButton">OFF</button> -->
   <p>
   Camera Angle <input type="range" min="-180" max="180" value="5" class="slider" id="angleSlide">
 
