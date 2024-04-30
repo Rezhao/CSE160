@@ -159,7 +159,6 @@ function main() {
     }
   });
 
-
   // Specify the color for clearing <canvas> (color: 16, 110, 41)
   gl.clearColor(0.06, 0.43, 0.16, 1.0);
 
@@ -208,9 +207,7 @@ function click(ev){
   if (Math.abs(g_AngleY / 360) > 1){
       g_AngleY = 0;
   }
-
 }
-
 
 //Extract the event click and return it in WebGL coordinates
 function convertCoordinatesEventToGL(ev) {

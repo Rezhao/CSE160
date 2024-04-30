@@ -15,16 +15,22 @@
 </head>
 <body onload="main()">
   <h2>Party Panda</h2>
-  <p>Notes to Grader: </p>
+  <p>Notes to Grader: I added animations for all legs and head. The head bobs up and down while the legs move 
+    in three parts: thighs, calves, and feet which can all be controlled separately through the sliders. I used a cone shape for 
+    the panda's party hat. When you click and drag on the canvas, it rotates the panda in that direction. 
+    For poke, I made it so when you hold down shift and click, the panda goes into happy mode and when shift is released,
+    the panda goes back to regular. Happy mode is where the panda has smiley eyes and a rainbow arc around it's head. 
+    It also sways side to side like it's wagging it's tail. I also tried optimizing the performance by editing how 
+    often the buffer gets created in Triangle.js and showed the performance on the screen.
+  </p>
   <canvas id="webgl" width="500" height="500">
     Please use a browser that supports Canvas
   </canvas>
   <p id="numdot">XXX</p>
   <p>
-    <!-- Animate All <input type="range" min="-10" max="10" value="0" class="slider" id="allSlide"> -->
-    Animate All:
-    <button type="button" id="animationAllOnButton">ON</button>
-    <button type="button" id="animationAllOffButton">OFF</button>
+  Animate All:
+  <button type="button" id="animationAllOnButton">ON</button>
+  <button type="button" id="animationAllOffButton">OFF</button>
   <p>
   Feet Movement <input type="range" min="-10" max="10" value="0" class="slider" id="feetSlide">
   Animation:
@@ -45,11 +51,6 @@
   Animation:
   <button type="button" id="animationHeadOnButton">ON</button>
   <button type="button" id="animationHeadOffButton">OFF</button>
-  <!-- <p>
-  Right Leg Follow <input type="range" min="-30" max="30" value="0" class="slider" id="rightLegSlide">
-  Animation:
-  <button type="button" id="animationRightLegOnButton">ON</button>
-  <button type="button" id="animationRightLegOffButton">OFF</button> -->
   <p>
   Camera Angle <input type="range" min="-180" max="180" value="5" class="slider" id="angleSlide">
 

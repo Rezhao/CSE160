@@ -41,8 +41,8 @@ function drawTriangle3D(vertices) {
   if (this.buffer == null) {
     this.buffer = gl.createBuffer();
     if (!this.buffer) {
-    console.log('Failed to create the buffer object');
-    return -1;
+      console.log('Failed to create the buffer object');
+      return -1;
     }
   }
 
