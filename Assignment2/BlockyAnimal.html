@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Assignment2</title>
-  <!-- <script src="asg1.js"></script> -->
-  <script src="Point.js"></script>
   <script src="Triangle.js"></script>
-  <script src="Circle.js"></script>
   <script src="Cube.js"></script>
+  <script src="Cone.js"></script>
   <script src="BlockyAnimal.js"></script>
   <script src="lib/webgl-utils.js"></script>
   <script src="lib/webgl-debug.js"></script>
@@ -16,11 +14,17 @@
   <script src="lib/cuon-matrix.js"></script>
 </head>
 <body onload="main()">
+  <h2>Party Panda</h2>
   <p>Notes to Grader: </p>
   <canvas id="webgl" width="500" height="500">
     Please use a browser that supports Canvas
   </canvas>
   <p id="numdot">XXX</p>
+  <p>
+    <!-- Animate All <input type="range" min="-10" max="10" value="0" class="slider" id="allSlide"> -->
+    Animate All:
+    <button type="button" id="animationAllOnButton">ON</button>
+    <button type="button" id="animationAllOffButton">OFF</button>
   <p>
   Feet Movement <input type="range" min="-10" max="10" value="0" class="slider" id="feetSlide">
   Animation:
