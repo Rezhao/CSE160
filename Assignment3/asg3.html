@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment3</title>
+  <script src="Triangle.js"></script>
+  <script src="Cube.js"></script>
+  <script src="Cone.js"></script>
+  <script src="Camera.js"></script>
+  <!-- <script src="BlockyAnimal.js"></script> -->
+  <script src="World.js"></script>
+  <script src="lib/webgl-utils.js"></script>
+  <script src="lib/webgl-debug.js"></script>
+  <script src="lib/cuon-utils.js"></script>
+  <script src="lib/cuon-matrix-cse160.js"></script>
+</head>
+<body onload="main()">
+  <h2>Virtual World</h2>
+  <p>Notes to Grader: Texture is applied to the sky, ground, and white fur of the panda. 
+    All other elements on the panda are using color.
+  </p>
+  <canvas id="webgl" width="500" height="500">
+    Please use a browser that supports Canvas
+  </canvas>
+  <p id="numdot">XXX</p>
+  <p>
+  Animate All:
+  <button type="button" id="animationAllOnButton">ON</button>
+  <button type="button" id="animationAllOffButton">OFF</button>
+  <p>
+  Feet Movement <input type="range" min="-10" max="10" value="0" class="slider" id="feetSlide">
+  Animation:
+  <button type="button" id="animationFeetOnButton">ON</button>
+  <button type="button" id="animationFeetOffButton">OFF</button>
+  <p>
+  Leg Movement <input type="range" min="-30" max="30" value="0" class="slider" id="legSlide">
+  Animation:
+  <button type="button" id="animationLegOnButton">ON</button>
+  <button type="button" id="animationLegOffButton">OFF</button>
+  <p>
+  Leg Calf Movement <input type="range" min="-30" max="0" value="0" class="slider" id="calfSlide">
+  Animation:
+  <button type="button" id="animationCalfOnButton">ON</button>
+  <button type="button" id="animationCalfOffButton">OFF</button>
+  <p>
+  Head Movement <input type="range" min="-10" max="10" value="0" class="slider" id="headSlide">
+  Animation:
+  <button type="button" id="animationHeadOnButton">ON</button>
+  <button type="button" id="animationHeadOffButton">OFF</button>
+  <p>
+  Camera Angle <input type="range" min="-180" max="180" value="5" class="slider" id="angleSlide">
+
+</body>
+</html>
