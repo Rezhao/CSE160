@@ -456,23 +456,26 @@ function updateAnimationAngles() {
 
 function keydown(ev) {
   if (ev.keyCode == 68) { //d key
-      g_camera.eye.elements[0] += 0.2;
+      // g_camera.eye.elements[0] += 0.2;
+      g_camera.moveRight();
   }
   else if (ev.keyCode == 65) { //a key
-      g_camera.eye.elements[0] -= 0.2;
+      // g_camera.eye.elements[0] -= 0.2;
+      g_camera.moveLeft();
   }
   else if (ev.keyCode == 87) { //w key
-      g_camera.forward();
+      g_camera.moveForward();
+      // g_camera.eye.elements[2] -= 0.2;
   }
   else if (ev.keyCode == 83) { //s key
-      g_camera.back();
+      g_camera.moveBackwards();
   }
-  // else if (ev.keyCode == 81) { //q key
-  //     g_camera.panLeft();
-  // }
-  // else if (ev.keyCode == 69) { //e key
-  //     g_camera.panRight();
-  // }
+  else if (ev.keyCode == 81) { //q key
+      g_camera.panLeft();
+  }
+  else if (ev.keyCode == 69) { //e key
+      g_camera.panRight();
+  }
   renderAllShapes();
   console.log(ev.keyCode);
 }
@@ -502,10 +505,20 @@ function drawMap() {
         body.matrix.setTranslate(0, -0.75, 0);
         body.matrix.scale(0.3, 0.3, 0.3);
         body.matrix.translate(x - 16, 0, y - 16);
-        body.renderfaster();
+        body.renderfasterUV();
       }
     }
   }
+  // for (x=0; x<8; x++) {
+  //   for (y=0; y=8; y++) {
+  //     if (g_map[x][y] == 1) {
+  //       var body = new Cube();
+  //       body.color = [1.0, 1.0, 1.0, 1.0];
+  //       body.matrix.translate(x-4, -.75, y-4);
+  //       body.render();
+  //     }
+  //   }
+  // }
 }
 
 //Draw every shape that is supposed to be in the canvas
@@ -514,12 +527,14 @@ function renderAllShapes() {
   var startTime = performance.now();
 
   //pass the projection matrix
-  var projMat = new Matrix4();
-  projMat.setPerspective(50, canvas.width/canvas.height, .1, 100);
+  // var projMat = new Matrix4();
+  // projMat.setPerspective(50, canvas.width/canvas.height, .1, 100);
+  var projMat = g_camera.projMat;
   gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
 
   //pass the view matrix
-  var viewMat = new Matrix4();
+  var viewMat = g_camera.viewMat;
+  // var viewMat = new Matrix4();
   // viewMat.setLookAt(g_eye[0], g_eye[1], g_eye[2], g_at[0], g_at[1], g_at[2], g_up[0], g_up[1], g_up[2]); // (eye, at, up)
   viewMat.setLookAt(
     g_camera.eye.elements[0], g_camera.eye.elements[1], g_camera.eye.elements[2], 
@@ -547,15 +562,15 @@ function renderAllShapes() {
   floor.matrix.translate(0, -.75, 0);
   floor.matrix.scale(10, 0, 10);
   floor.matrix.translate(-0.5, 0, -0.5);
-  floor.render();
+  floor.renderfasterUV();
 
   //draw the sky
   var sky = new Cube();
-  sky.color = [1,0,0,1];
+  sky.color = [0,1,1,1];
   sky.textureNum = 0;
   sky.matrix.scale(50, 50, 50);
   sky.matrix.translate(-0.5, -0.5, -0.5);
-  sky.render();
+  sky.renderfasterUV();
 
   //panda body
   var body = new Cube();
@@ -564,7 +579,7 @@ function renderAllShapes() {
   body.matrix.setTranslate(-0.2, -.5, 0.0);
   var bodyCoor = new Matrix4(body.matrix);
   body.matrix.scale(0.5, 0.8, 0.9);
-  body.render();
+  body.renderfasterUV();
 
   //panda tail
   var tail = new Cube();
@@ -572,7 +587,7 @@ function renderAllShapes() {
   tail.matrix = new Matrix4(bodyCoor);
   tail.matrix.setTranslate(-0.05, 0, 0.8);
   tail.matrix.scale(0.2, 0.2, 0.2);
-  tail.render();
+  tail.renderfasterUV();
 
   //panda black top chest
   var chest = new Cube();
@@ -580,7 +595,7 @@ function renderAllShapes() {
   chest.matrix = new Matrix4(bodyCoor);
   chest.matrix.setTranslate(-0.201, -0.1, -0.001);
   chest.matrix.scale(0.502, 0.401, 0.3);
-  chest.render();
+  chest.renderfasterUV();
 
   //panda front left leg
   var frontLeftLeg = new Cube();
@@ -590,7 +605,7 @@ function renderAllShapes() {
   frontLeftLeg.matrix.rotate(g_leftLegAngle, 1, 0, 0);
   var frontLeftLegCoordinates = new Matrix4(frontLeftLeg.matrix);
   frontLeftLeg.matrix.scale(0.302, -0.5, 0.3);
-  frontLeftLeg.render();
+  frontLeftLeg.renderfasterUV();
 
   //panda front left calf
   var frontLeftCalf = new Cube();
@@ -600,7 +615,7 @@ function renderAllShapes() {
   frontLeftCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
   var frontLeftCalfCoordinates = new Matrix4(frontLeftCalf.matrix);
   frontLeftCalf.matrix.scale(0.301, -0.4, 0.3);
-  frontLeftCalf.render();
+  frontLeftCalf.renderfasterUV();
 
   //panda front left foot
   var frontLeftFoot = new Cube();
@@ -609,7 +624,7 @@ function renderAllShapes() {
   frontLeftFoot.matrix.translate(-0.001, -0.32, 0.315);
   frontLeftFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   frontLeftFoot.matrix.scale(0.303, -0.15, -0.401);
-  frontLeftFoot.render();
+  frontLeftFoot.renderfasterUV();
 
   //panda front right leg
   var frontRightLeg = new Cube();
@@ -619,7 +634,7 @@ function renderAllShapes() {
   frontRightLeg.matrix.rotate(g_rightLegAngle, 1, 0, 0);
   var frontRightLegCoordinates = new Matrix4(frontRightLeg.matrix);
   frontRightLeg.matrix.scale(0.302, -0.5, 0.3);
-  frontRightLeg.render();
+  frontRightLeg.renderfasterUV();
 
   //panda front right calf
   var frontRightCalf = new Cube();
@@ -629,7 +644,7 @@ function renderAllShapes() {
   frontRightCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
   var frontRightCalfCoordinates = new Matrix4(frontRightCalf.matrix);
   frontRightCalf.matrix.scale(0.301, -0.4, 0.3);
-  frontRightCalf.render();
+  frontRightCalf.renderfasterUV();
 
   //panda front right foot
   var frontRightFoot = new Cube();
@@ -638,7 +653,7 @@ function renderAllShapes() {
   frontRightFoot.matrix.translate(-0.001, -0.32, 0.315);
   frontRightFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   frontRightFoot.matrix.scale(0.303, -0.15, -0.401);
-  frontRightFoot.render();
+  frontRightFoot.renderfasterUV();
 
   //panda back left leg
   var backLeftLeg = new Cube();
@@ -649,7 +664,7 @@ function renderAllShapes() {
   backLeftLeg.matrix.rotate(g_rightLegAngle, 1, 0, 0);
   var backLeftLegCoordinates = new Matrix4(backLeftLeg.matrix);
   backLeftLeg.matrix.scale(0.302, -0.5, 0.3);
-  backLeftLeg.render();
+  backLeftLeg.renderfasterUV();
   
   //panda back left calf
   var backLeftCalf = new Cube();
@@ -659,7 +674,7 @@ function renderAllShapes() {
   backLeftCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
   var backLeftCalfCoordinates = new Matrix4(backLeftCalf.matrix);
   backLeftCalf.matrix.scale(0.301, -0.4, 0.3);
-  backLeftCalf.render();
+  backLeftCalf.renderfasterUV();
 
   //panda back left foot
   var backLeftFoot = new Cube();
@@ -668,7 +683,7 @@ function renderAllShapes() {
   backLeftFoot.matrix.translate(-0.001, -0.32, 0.315);
   backLeftFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   backLeftFoot.matrix.scale(0.303, -0.15, -0.401);
-  backLeftFoot.render();
+  backLeftFoot.renderfasterUV();
 
   //panda back right leg
   var backRightLeg = new Cube();
@@ -679,7 +694,7 @@ function renderAllShapes() {
   backRightLeg.matrix.rotate(g_leftLegAngle, 1, 0, 0);
   var backRightLegCoordinates = new Matrix4(backRightLeg.matrix);
   backRightLeg.matrix.scale(0.302, -0.5, 0.3);
-  backRightLeg.render();
+  backRightLeg.renderfasterUV();
 
   //panda back left calf
   var backRightCalf = new Cube();
@@ -689,7 +704,7 @@ function renderAllShapes() {
   backRightCalf.matrix.rotate(g_calfAngle, 1, 0, 0);
   var backRightCalfCoordinates = new Matrix4(backRightCalf.matrix);
   backRightCalf.matrix.scale(0.301, -0.4, 0.3);
-  backRightCalf.render();
+  backRightCalf.renderfasterUV();
 
   //panda back right foot
   var backRightFoot = new Cube();
@@ -698,7 +713,7 @@ function renderAllShapes() {
   backRightFoot.matrix.translate(-0.001, -0.32, 0.315);
   backRightFoot.matrix.rotate(g_feetAngle, 1, 0, 0);
   backRightFoot.matrix.scale(0.303, -0.15, -0.401);
-  backRightFoot.render();
+  backRightFoot.renderfasterUV();
 
   //panda head
   var head = new Cube();
@@ -708,7 +723,7 @@ function renderAllShapes() {
   head.matrix.rotate(g_headAngle, 1, 0, 1);
   var headCoordinates = new Matrix4(head.matrix);
   head.matrix.scale(0.65, 0.55, 0.55);
-  head.render();
+  head.renderfasterUV();
 
   //panda left ear
   var leftEar = new Cube();
@@ -717,7 +732,7 @@ function renderAllShapes() {
   leftEar.matrix.translate(0, 0.4, -0.001);
   leftEar.matrix.rotate(45, 0, 0, 1);
   leftEar.matrix.scale(0.2, 0.15, 0.2);
-  leftEar.render();
+  leftEar.renderfasterUV();
 
   //panda right ear
   var rightEar = new Cube();
@@ -726,7 +741,7 @@ function renderAllShapes() {
   rightEar.matrix.translate(0.65, 0.4, -0.001);
   rightEar.matrix.rotate(45, 0, 0, 1);
   rightEar.matrix.scale(0.15, 0.2, 0.2);
-  rightEar.render();
+  rightEar.renderfasterUV();
 
   //panda left eye
   var leftEye = new Cube();
@@ -735,7 +750,7 @@ function renderAllShapes() {
   leftEye.matrix.translate(0.05, 0.25, -0.001);
   leftEye.matrix.rotate(-45, 0, 0, 1);
   leftEye.matrix.scale(0.12, 0.2, 0.2);
-  leftEye.render();
+  leftEye.renderfasterUV();
 
   //panda left eyeball
   var leftEyeball = new Cube();
@@ -745,7 +760,7 @@ function renderAllShapes() {
   leftEyeball.matrix.rotate(-45, 0, 0, 1);
   var leftEyeBallCoordinates = new Matrix4(leftEyeball.matrix);
   leftEyeball.matrix.scale(0.05, 0.05, 0.2);
-  leftEyeball.render();
+  leftEyeball.renderfasterUV();
 
   //panda right eye
   var rightEye = new Cube();
@@ -754,7 +769,7 @@ function renderAllShapes() {
   rightEye.matrix.translate(0.5, 0.17, -0.001);
   rightEye.matrix.rotate(45, 0, 0, 1);
   rightEye.matrix.scale(0.12, 0.2, 0.2);
-  rightEye.render();
+  rightEye.renderfasterUV();
 
   //panda right eyeball
   var rightEyeball = new Cube();
@@ -764,7 +779,7 @@ function renderAllShapes() {
   rightEyeball.matrix.rotate(45, 0, 0, 1);
   var rightEyeBallCoordinates = new Matrix4(rightEyeball.matrix);
   rightEyeball.matrix.scale(0.05, 0.05, 0.2);
-  rightEyeball.render();
+  rightEyeball.renderfasterUV();
 
   if (shift_key) {
     //panda left eye wink
@@ -773,7 +788,7 @@ function renderAllShapes() {
     leftWink.matrix = new Matrix4(leftEyeBallCoordinates);
     leftWink.matrix.translate(0.017, -0.02, -0.0015);
     leftWink.matrix.scale(0.05, 0.05, 0.2);
-    leftWink.render();
+    leftWink.renderfasterUV();
 
     //panda right eye wink
     var rightWink = new Cube();
@@ -781,7 +796,7 @@ function renderAllShapes() {
     rightWink.matrix = new Matrix4(rightEyeBallCoordinates);
     rightWink.matrix.translate(-0.018, -0.02, -0.0015);
     rightWink.matrix.scale(0.05, 0.05, 0.2);
-    rightWink.render();
+    rightWink.renderfasterUV();
 
     //rainbow arc cubes
     var c1 = new Cube();
@@ -789,63 +804,63 @@ function renderAllShapes() {
     c1.matrix.translate(-0.01, 0.9, 0);
     c1.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c1.matrix.scale(0.08, 0.08, 0.08);
-    c1.render();
+    c1.renderfasterUV();
 
     var c2 = new Cube();
     c2.color = [115/255, 1, 136/255, 1]; //115, 255, 136
     c2.matrix.translate(-0.3, 0.82, 0);
     c2.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c2.matrix.scale(0.08, 0.08, 0.08);
-    c2.render();
+    c2.renderfasterUV();
 
     var c3 = new Cube();
     c3.color = [1, 225/255, 117/255, 1]; //255, 225, 117
     c3.matrix.translate(-0.55, 0.6, 0);
     c3.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c3.matrix.scale(0.08, 0.08, 0.08);
-    c3.render();
+    c3.renderfasterUV();
 
     var c4 = new Cube();
     c4.color = [1, 170/255, 117/255, 1]; //255, 170, 117
     c4.matrix.translate(-0.72, 0.3, 0);
     c4.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c4.matrix.scale(0.08, 0.08, 0.08);
-    c4.render();
+    c4.renderfasterUV();
 
     var c5 = new Cube();
     c5.color = [1, 156/255, 212/255, 1];
     c5.matrix.translate(-0.8, 0, 0);
     c5.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c5.matrix.scale(0.08, 0.08, 0.08);
-    c5.render();
+    c5.renderfasterUV();
 
     var c6 = new Cube();
     c6.color = [115/255, 1, 136/255, 1];
     c6.matrix.translate(0.3, 0.82, 0);
     c6.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c6.matrix.scale(0.08, 0.08, 0.08);
-    c6.render();
+    c6.renderfasterUV();
 
     var c7 = new Cube();
     c7.color = [1, 225/255, 117/255, 1];
     c7.matrix.translate(0.55, 0.6, 0);
     c7.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c7.matrix.scale(0.08, 0.08, 0.08);
-    c7.render();
+    c7.renderfasterUV();
 
     var c8 = new Cube();
     c8.color = [1, 170/255, 117/255, 1];
     c8.matrix.translate(0.72, 0.3, 0);
     c8.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c8.matrix.scale(0.08, 0.08, 0.08);
-    c8.render();
+    c8.renderfasterUV();
 
     var c9 = new Cube();
     c9.color = [1, 156/255, 212/255, 1];
     c9.matrix.translate(0.8, 0.02, 0);
     c9.matrix.rotate(g_seconds * 100, 1, 1, 1);
     c9.matrix.scale(0.08, 0.08, 0.08);
-    c9.render();
+    c9.renderfasterUV();
   }
 
   //panda snout
@@ -855,7 +870,7 @@ function renderAllShapes() {
   snout.matrix = new Matrix4(headCoordinates);
   snout.matrix.translate(0.19, 0.03, -0.1);
   snout.matrix.scale(0.25, 0.17, 0.2);
-  snout.render();
+  snout.renderfasterUV();
 
   //panda nose
   var nose = new Cube();
@@ -863,7 +878,7 @@ function renderAllShapes() {
   nose.matrix = new Matrix4(headCoordinates);
   nose.matrix.translate(0.27, 0.08, -0.15);
   nose.matrix.scale(0.1, 0.1, 0.2);
-  nose.render();
+  nose.renderfasterUV();
 
   var hat = new Cone();
   hat.color = [168/255, 119/255, 252/255, 1]; //168, 119, 252
