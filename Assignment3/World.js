@@ -537,7 +537,8 @@ function click(ev){
 
 function moveCamera(ev) {
   let [x, y] = convertCoordinatesEventToGL(ev);
-  g_camera.panCamera(-x);
+  // g_camera.panCamera(-x);
+  g_camera.panCameraXY(-x, -y);
 }
 
 //Extract the event click and return it in WebGL coordinates

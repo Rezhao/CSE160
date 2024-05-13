@@ -97,4 +97,28 @@ class Camera {
     e.set(this.eye);
     this.at = e.add(f_prime);
   }
+
+  panCameraXY(xDeg, yDeg) {
+    var f = new Vector3();
+    f.set(this.at);
+    f.sub(this.eye);
+
+    // Calculate the right vector
+    var right = Vector3.cross(this.up, f);
+    right.normalize();
+
+    // Rotate around the up vector (x-axis rotation)
+    var xRotationMatrix = new Matrix4();
+    xRotationMatrix.setRotate(xDeg, this.up.elements[0], this.up.elements[1], this.up.elements[2]);
+    var f_prime = xRotationMatrix.multiplyVector3(f);
+
+    // Rotate around the right vector (y-axis rotation)
+    var yRotationMatrix = new Matrix4();
+    yRotationMatrix.setRotate(yDeg, right.elements[0], right.elements[1], right.elements[2]);
+    f_prime = yRotationMatrix.multiplyVector3(f_prime);
+
+    var e = new Vector3();
+    e.set(this.eye);
+    this.at = e.add(f_prime);
+}
 }
