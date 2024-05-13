@@ -370,6 +370,8 @@ function sendTextureToTEXTURE2(image2) {
   console.log('finished loadTexture2');
 }
 
+var canRead;
+var frameBuffer;
 function sendTextureToTEXTURE3(image3) {
   var texture = gl.createTexture(); //create a texture object
   if (!texture) {
@@ -392,6 +394,25 @@ function sendTextureToTEXTURE3(image3) {
   gl.uniform1i(u_Sampler3, 3);
 
   console.log('finished loadTexture3');
+
+  // // make a framebuffer
+  // frameBuffer = gl.createFramebuffer();
+  // if (!frameBuffer) {
+  //   console.log('Failed to create buffer object');
+  //   return -1;
+  // }
+
+  // // make this the current frame buffer
+  // gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
+
+  // // attach the texture to the framebuffer.
+  // gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+  // // check if you can read from this type of texture.
+  // canRead = (gl.checkFramebufferStatus(gl.FRAMEBUFFER) == gl.FRAMEBUFFER_COMPLETE);
+
+  // // Unbind the framebuffer
+  // gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
 
 function sendTextureToTEXTURE4(image4) {
@@ -499,16 +520,29 @@ function check(ev) {
     rect.top <= y && y < rect.bottom) { // inside canvas
     var x_in_canvas = x - rect.left, y_in_canvas = rect.bottom - y;
     gl.uniform1i(u_Clicked, 1);  // Pass true to u_Clicked
-    // Read pixel at the clicked position
+    // // Read pixel at the clicked position
     var pixels = new Uint8Array(4); // Array for storing the pixel value
     gl.readPixels(x_in_canvas, y_in_canvas, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-    // console.log(pixels[0]);
+    console.log(pixels[0]);
     if (pixels[0] == 255) { // The mouse in on cube if R(pixels[0]) is 255
       picked = true;
       console.log(pixels[0]);
     }
 
     gl.uniform1i(u_Clicked, 0);  // Pass false to u_Clicked(rewrite the cube)
+  //   if (canRead) {
+  //     // bind the framebuffer
+  //     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
+   
+  //     // read the pixels
+  //     gl.readPixels(x_in_canvas, y_in_canvas, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+   
+  //     // Unbind the framebuffer
+  //     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  //     // console.log("clicked?");
+  //     console.log(pixels[0]);
+  //  }
+  //  gl.uniform1i(u_Clicked, 0); 
   }
 }
 
@@ -660,6 +694,7 @@ function drawMap() {
   //   }
   // }
   var body = new Cube();
+  var clickCube = new Cube();
   for (let x = 0; x < 32; x++) {
     for (let y = 0; y < 32; y++) {
         if (g_map[x][y] == 1) {
@@ -683,7 +718,7 @@ function drawMap() {
           body.textureNum = 3;
           body.matrix.setTranslate(0, -0.75, 0);
           body.matrix.scale(1, 3, 1);
-          body.matrix.translate(x - 16, 0, y - 16);
+          body.matrix.translate(x - 15.999, 0.001, y - 15.999);
           body.renderfasterUV();
         } else if (g_map[x][y] == 4) {
           // var body = new Cube();
