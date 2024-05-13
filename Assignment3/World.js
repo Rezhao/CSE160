@@ -27,6 +27,7 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler1;
   uniform sampler2D u_Sampler2;
   uniform sampler2D u_Sampler3;
+  uniform sampler2D u_Sampler4;
   uniform int u_whichTexture;
   void main() {
     if (u_whichTexture == -2) {
@@ -41,6 +42,8 @@ var FSHADER_SOURCE = `
       gl_FragColor = texture2D(u_Sampler2, v_UV);
     } else if (u_whichTexture == 3) {       //use texture3
       gl_FragColor = texture2D(u_Sampler3, v_UV);
+    } else if (u_whichTexture == 4) {       //use texture4
+      gl_FragColor = texture2D(u_Sampler4, v_UV);
     } else {                                // error, put redish
       gl_FragColor = vec4(1, 0.2, 0.2, 1);
     }
@@ -61,6 +64,7 @@ let u_Sampler0;
 let u_Sampler1;
 let u_Sampler2;
 let u_Sampler3;
+let u_Sampler4;
 let u_whichTexture;
 let u_Clicked;
 
@@ -157,6 +161,13 @@ function connectVariablesToGLSL() {
   u_Sampler3 = gl.getUniformLocation(gl.program, 'u_Sampler3');
   if (!u_Sampler3) {
     console.log('Failed to get the storage location of u_Sampler3');
+    return;
+  }
+
+  // Get the storage location of u_Sampler4
+  u_Sampler4 = gl.getUniformLocation(gl.program, 'u_Sampler4');
+  if (!u_Sampler4) {
+    console.log('Failed to get the storage location of u_Sampler4');
     return;
   }
 
@@ -272,6 +283,14 @@ function initTextures() {
   image3.onload = function() {sendTextureToTEXTURE3(image3);};
   image3.src = 'bamboo.jpeg';
 
+  var image4 = new Image(); //create the image object
+  if (!image4) {
+    console.log("Failed to create the image object");
+    return false;
+  }
+  image4.onload = function() {sendTextureToTEXTURE4(image4);};
+  image4.src = 'cake.png';
+
 
   return true;
 }
@@ -373,6 +392,30 @@ function sendTextureToTEXTURE3(image3) {
   gl.uniform1i(u_Sampler3, 3);
 
   console.log('finished loadTexture3');
+}
+
+function sendTextureToTEXTURE4(image4) {
+  var texture = gl.createTexture(); //create a texture object
+  if (!texture) {
+    console.log("Failed to create the texture object");
+    return false;
+  }
+
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1); //flip the image's y axis
+  //enable texture unit0
+  gl.activeTexture(gl.TEXTURE4);
+  //bind the texture object to the target
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  //set the texture parameters
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  //set the texture image
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image4);
+
+  //set the texture unit 0 to the sampler
+  gl.uniform1i(u_Sampler4, 4);
+
+  console.log('finished loadTexture4');
 }
 
 var xyCoord = [0,0];
@@ -703,6 +746,14 @@ function renderAllShapes() {
   sky.renderfasterUV();
 
   drawPanda();
+
+  //draw the cake
+  var cake = new Cube();
+  cake.color = [0,1,1,1];
+  cake.textureNum = 4;
+  cake.matrix.scale(0.75, 0.75, 0.75);
+  cake.matrix.translate(10, -0.5, -0.5);
+  cake.renderfasterUV();
 
   //check the time at the end of the function and show on web page
   var duration = performance.now() - startTime;

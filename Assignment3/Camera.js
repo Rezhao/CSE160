@@ -1,8 +1,8 @@
 class Camera {
 	constructor() {
     this.fov = 60;
-		this.eye = new Vector3([0, 0, 5]);
-		this.at = new Vector3([0, 0, -100]);
+		this.eye = new Vector3([0, 0, -5]);
+		this.at = new Vector3([0, 0, 100]);
 		this.up = new Vector3([0, 1, 0]);
 
     //pass the projection matrix
