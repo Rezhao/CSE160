@@ -7,7 +7,7 @@ class Camera {
 
     //pass the projection matrix
     this.projMat = new Matrix4();
-    this.projMat.setPerspective(50, canvas.width/canvas.height, .1, 100);
+    this.projMat.setPerspective(this.fov, canvas.width/canvas.height, .1, 100);
 
     //pass the view matrix
     this.viewMat = new Matrix4();
@@ -80,6 +80,18 @@ class Camera {
     f.sub(this.eye);
     var rotationMatrix = new Matrix4();
     rotationMatrix.setRotate(-this.alpha, this.up.elements[0], this.up.elements[1], this.up.elements[2]);
+    var f_prime = rotationMatrix.multiplyVector3(f);
+    var e = new Vector3();
+    e.set(this.eye);
+    this.at = e.add(f_prime);
+  }
+
+  panCamera(deg) {
+    var f = new Vector3();
+    f.set(this.at);
+    f.sub(this.eye);
+    var rotationMatrix = new Matrix4();
+    rotationMatrix.setRotate(deg, this.up.elements[0], this.up.elements[1], this.up.elements[2]);
     var f_prime = rotationMatrix.multiplyVector3(f);
     var e = new Vector3();
     e.set(this.eye);
