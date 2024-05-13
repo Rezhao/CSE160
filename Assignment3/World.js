@@ -394,25 +394,6 @@ function sendTextureToTEXTURE3(image3) {
   gl.uniform1i(u_Sampler3, 3);
 
   console.log('finished loadTexture3');
-
-  // // make a framebuffer
-  // frameBuffer = gl.createFramebuffer();
-  // if (!frameBuffer) {
-  //   console.log('Failed to create buffer object');
-  //   return -1;
-  // }
-
-  // // make this the current frame buffer
-  // gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
-
-  // // attach the texture to the framebuffer.
-  // gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-
-  // // check if you can read from this type of texture.
-  // canRead = (gl.checkFramebufferStatus(gl.FRAMEBUFFER) == gl.FRAMEBUFFER_COMPLETE);
-
-  // // Unbind the framebuffer
-  // gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
 
 function sendTextureToTEXTURE4(image4) {
@@ -530,19 +511,6 @@ function check(ev) {
     }
 
     gl.uniform1i(u_Clicked, 0);  // Pass false to u_Clicked(rewrite the cube)
-  //   if (canRead) {
-  //     // bind the framebuffer
-  //     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
-   
-  //     // read the pixels
-  //     gl.readPixels(x_in_canvas, y_in_canvas, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-   
-  //     // Unbind the framebuffer
-  //     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-  //     // console.log("clicked?");
-  //     console.log(pixels[0]);
-  //  }
-  //  gl.uniform1i(u_Clicked, 0); 
   }
 }
 
