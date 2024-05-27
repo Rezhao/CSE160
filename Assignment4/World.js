@@ -370,7 +370,7 @@ function addActionsForHtmlUI() {
   document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderAllShapes();});
 
   //light slider events
-  document.getElementById('lightSlideX').addEventListener('mousemove', function(ev) {if(ev.buttons == 1) { g_lightPos[0] = this.value/100; renderAllShapes();}});
+  document.getElementById('lightSlideX').addEventListener('mousemove', function(ev) {if(ev.buttons == 1) { g_lightPos[0] = -this.value/100; renderAllShapes();}});
   document.getElementById('lightSlideY').addEventListener('mousemove', function(ev) {if(ev.buttons == 1) { g_lightPos[1] = this.value/100; renderAllShapes();}});
   document.getElementById('lightSlideZ').addEventListener('mousemove', function(ev) {if(ev.buttons == 1) { g_lightPos[2] = this.value/100; renderAllShapes();}});
   //ambient slider
@@ -785,7 +785,6 @@ function renderAllShapes() {
 
   //pass the projection matrix
   var projMat = g_camera.projMat;
-  // projMat.setPerspective(90, 1 * canvas.width/canvas.height, 0.1, 100);
   gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
 
   //pass the view matrix
@@ -819,27 +818,12 @@ function renderAllShapes() {
 
   gl.uniform1i(u_lightOn, g_lightOn);
 
-  // gl.uniform3f(gl.getUniformLocation(gl.program, 'uLightPosition'), 0.0, 0.0, -.5);
-  // gl.uniform3f(gl.getUniformLocation(gl.program, 'uLightDirection'), 0.0, 0.0, 1.0);
-  // gl.uniform1f(gl.getUniformLocation(gl.program, 'uLightInnerCutoff'), Math.cos(Math.PI / 12));
-  // gl.uniform1f(gl.getUniformLocation(gl.program, 'uLightOuterCutoff'), Math.cos(Math.PI / 6));
-
-  
   // draw the light
   var light = new Cube();
-  // light.color = [g_lightColor[0], g_lightColor[1], g_lightColor[2], 1.0];
   light.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2]);
   light.matrix.scale(-0.1, -0.1, -0.1);
   light.matrix.translate(-0.5, -0.5, -0.5);
   light.renderfast();
-
-  // // draw the light
-  // var spotlight = new Cube();
-  // // light.color = [g_lightColor[0], g_lightColor[1], g_lightColor[2], 1.0];
-  // spotlight.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2]);
-  // spotlight.matrix.scale(-0.1, -0.1, -0.1);
-  // spotlight.matrix.translate(-0.5, 1, -0.5);
-  // spotlight.renderfast();
 
   // draw sphere
   var sp = new Sphere();
@@ -860,8 +844,6 @@ function renderAllShapes() {
 
   //draw the floor
   var floor = new Cube();
-  // floor.color = [102/255, 81/255, 69/255, 1]; //102, 81, 69
-  // floor.textureNum = 2;
   if (g_normalOn) {
     floor.textureNum = -3;
   } else {
@@ -887,17 +869,7 @@ function renderAllShapes() {
   sky.normalMatrix.setInverseOf(sky.matrix).transpose();
   sky.renderfast();
 
-  /////// yellow.normalMatrix.setInverseOf(yellow.matrix).transpose();
-
   drawPanda();
-
-  // //draw the cake
-  // var cake = new Cube();
-  // cake.color = [0,1,1,1];
-  // cake.textureNum = 4;
-  // cake.matrix.scale(0.75, 0.75, 0.75);
-  // cake.matrix.translate(18, -1, -20);
-  // cake.renderfasterUV();
 
   //check the time at the end of the function and show on web page
   var duration = performance.now() - startTime;
