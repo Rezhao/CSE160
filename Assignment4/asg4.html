@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment3</title>
+  <script src="Triangle.js"></script>
+  <script src="Cube.js"></script>
+  <script src="Cone.js"></script>
+  <script src="Sphere.js"></script>
+  <script src="Camera.js"></script>
+  <script src="Panda.js"></script>
+  <!-- <script src="BlockyAnimal.js"></script> -->
+  <script src="World.js"></script>
+  <script src="lib/webgl-utils.js"></script>
+  <script src="lib/webgl-debug.js"></script>
+  <script src="lib/cuon-utils.js"></script>
+  <script src="lib/cuon-matrix-cse160.js"></script>
+</head>
+<body onload="main()">
+  <h2>Virtual World</h2>
+  <p>Notes to Grader: Use WASD to move and QE or mouse cursor to rotate the camera. Move the sliders 
+    to adjust the RGB values for ambient, diffuse, and specular color of the light.
+  </p>
+  <canvas id="webgl" width="500" height="500">
+    Please use a browser that supports Canvas
+  </canvas>
+  <p id="numdot">XXX</p>
+  <p>
+  <button type="button" id="normalOn">Normal On</button>
+  <button type="button" id="normalOff">Normal Off</button>
+  <p>
+  Light X <input type="range" min="-700" max="700" value="0" class="slider" id="lightSlideX">
+  Light Y <input type="range" min="-700" max="700" value="100" class="slider" id="lightSlideY">
+  Light Z <input type="range" min="-700" max="700" value="-200" class="slider" id="lightSlideZ">
+  <p>
+  Light:
+  <button type="button" id="lightOn">On</button>
+  <button type="button" id="lightOff">Off</button>
+  <p>
+  Light Animation:
+  <button type="button" id="lightAnimationOn">On</button>
+  <button type="button" id="lightAnimationOff">Off</button>
+  <p>
+  Ambient Color:
+  Red <input type="range" min="0" max="255" value="255" class="slider" id="ambientRed">
+  Blue <input type="range" min="0" max="255" value="255" class="slider" id="ambientBlue">
+  Green <input type="range" min="0" max="255" value="255" class="slider" id="ambientGreen">
+  <p>
+  Diffuse Color:
+  Red <input type="range" min="0" max="255" value="255" class="slider" id="diffuseRed">
+  Blue <input type="range" min="0" max="255" value="255" class="slider" id="diffuseBlue">
+  Green <input type="range" min="0" max="255" value="255" class="slider" id="diffuseGreen">
+  <p>
+  Specular Color:
+  Red <input type="range" min="0" max="255" value="255" class="slider" id="specularRed">
+  Blue <input type="range" min="0" max="255" value="255" class="slider" id="specularBlue">
+  Green <input type="range" min="0" max="255" value="255" class="slider" id="specularGreen">
+  <p>
+  Animate All:
+  <button type="button" id="animationAllOnButton">ON</button>
+  <button type="button" id="animationAllOffButton">OFF</button>
+  <p>
+  Feet Movement <input type="range" min="-10" max="10" value="0" class="slider" id="feetSlide">
+  Animation:
+  <button type="button" id="animationFeetOnButton">ON</button>
+  <button type="button" id="animationFeetOffButton">OFF</button>
+  <p>
+  Leg Movement <input type="range" min="-30" max="30" value="0" class="slider" id="legSlide">
+  Animation:
+  <button type="button" id="animationLegOnButton">ON</button>
+  <button type="button" id="animationLegOffButton">OFF</button>
+  <p>
+  Leg Calf Movement <input type="range" min="-30" max="0" value="0" class="slider" id="calfSlide">
+  Animation:
+  <button type="button" id="animationCalfOnButton">ON</button>
+  <button type="button" id="animationCalfOffButton">OFF</button>
+  <p>
+  Head Movement <input type="range" min="-10" max="10" value="0" class="slider" id="headSlide">
+  Animation:
+  <button type="button" id="animationHeadOnButton">ON</button>
+  <button type="button" id="animationHeadOffButton">OFF</button>
+  <p>
+  Camera Angle <input type="range" min="-180" max="180" value="5" class="slider" id="angleSlide">
+
+</body>
+</html>
